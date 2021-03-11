@@ -3,17 +3,15 @@ version: '3.7'
 services:
   url_db:
     image: postgres
-    environment:
-      - DARABASE=postgres
-      - POSTGRES_DB=url_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+      - static:/static
     ports:
        - 5432:5432
   url_web:
     build: .
+    env_file:
+      - .env
 #    command: python /usr/src/dev_proj/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/usr/src/dev_proj
@@ -21,6 +19,14 @@ services:
       - 8000:8000
     depends_on:
       - url_db
+#  nginx:
+#    build: ./nginx
+#    volumes:
+#      - static:/static
+#    ports:
+#      - 80:80
+#    depends_on:
+#      - url_db
 
 volumes:
   postgres_data:
