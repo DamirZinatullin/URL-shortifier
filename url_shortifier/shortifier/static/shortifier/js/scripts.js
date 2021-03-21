@@ -9,5 +9,5 @@ function myFunction(id) {
   document.execCommand("copy");
 
   /* Alert the copied text */
-  alert("Ссылка скопирована: " + copyText.value);
+//  alert("Ссылка скопирована: " + copyText.value);
 }

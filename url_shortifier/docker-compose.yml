@@ -7,28 +7,28 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - 5432:5432
-#  url_web:
-#    build: .
-#    env_file:
-#      - .env
-#    volumes:
-#      - .:/usr/src/dev_proj
-#      - static:/usr/src/dev_proj/static/
-#      - media:/usr/src/dev_proj/media/
-#    ports:
-#      - 8000:8000
-#    depends_on:
-#      - url_db
-#  nginx:
-#    build: ./nginx
-#    volumes:
-#      - static:/usr/src/dev_proj/static/
-#      - media:/usr/src/dev_proj/media/
-#
-#    ports:
-#      - 80:80
-#    depends_on:
-#      - url_db
+  url_web:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/dev_proj
+      - static:/usr/src/dev_proj/static/
+      - media:/usr/src/dev_proj/media/
+    ports:
+      - 8000:8000
+    depends_on:
+      - url_db
+  nginx:
+    build: ./nginx
+    volumes:
+      - static:/usr/src/dev_proj/static/
+      - media:/usr/src/dev_proj/media/
+
+    ports:
+      - 80:80
+    depends_on:
+      - url_db
 
 volumes:
   postgres_data:
