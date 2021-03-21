@@ -18,17 +18,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 try:
-    from .local_settings import SECRET_KEY, DEBUG
+    from .local_settings import SECRET_KEY, DEBUG, HOST_NAME
 except:
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG')
+    HOST_NAME = os.getenv('HOST_NAME')
 
 # # SECURITY WARNING: keep the secret key used in production secret!
 #
 # # SECURITY WARNING: don't run with debug turned on in production!
 
 
-HOST_NAME = 'http://0.0.0.0:8000/'
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -88,7 +88,7 @@ REST_FRAMEWORK = {
 
 
 try:
-    from .local_settings import DATABASES
+    from config.local_settings import DATABASES
 except:
 
     DATABASES = {
