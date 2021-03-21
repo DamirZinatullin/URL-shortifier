@@ -1,3 +1,6 @@
+import os
+from datetime import datetime
+
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_list_or_404
 from django.views.generic import DetailView
@@ -6,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from shortifier.services import *
-from .forms import URLForm
+from url_shortifier.settings import MEDIA_ROOT
+from .forms import URLForm, OutputForm
 # Create your views here.
 from .models import URLModel
 from .serializers import URLSerializer
@@ -28,6 +32,13 @@ def index(request):
                 if to_slugify:
                     url_model.slug_url = create_slug_url(to_slugify)
             url_model.save()
+            path = create_path_to_file(url_model.short_url.split('/')[-1]+'.png')
+            create_qr_code(url_model.source_url, path)
+            with open(path, 'rb') as f:
+                url_model.qrcode.save((url_model.short_url.split('/')[-1]+'.png'), f)
+            os.remove(path)
+
+            return redirect(url_model)
     else:
         form = URLForm()
     context = {'form': form}
@@ -38,6 +49,12 @@ class URLDetailView(DetailView):
     model = URLModel
     context_object_name = 'short_url'
     template_name = 'shortifier/url_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = OutputForm(instance=self.object)
+        context['form'] = form
+        return context
 
 
 def redirect_to_source_url(request, slug):

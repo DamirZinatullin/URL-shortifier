@@ -6,8 +6,8 @@ from .models import *
 
 
 class URLModelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'source_url', 'short_url', 'slug_url', 'created_at', 'updated_at')
-    fields = ('source_url', 'short_url', 'slug_url')
+    list_display = ('id', 'source_url', 'short_url', 'slug_url', 'created_at', 'updated_at', 'qrcode')
+    fields = ('source_url', 'short_url', 'slug_url', 'qrcode')
     list_display_links = ('source_url', 'short_url', 'slug_url')
     search_fields = ('source_url',)
     readonly_fields = ('short_url',)

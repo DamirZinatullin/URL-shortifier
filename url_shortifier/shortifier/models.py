@@ -9,6 +9,7 @@ class URLModel(models.Model):
     source_url = models.URLField(max_length=2083, verbose_name='Исходный url')
     short_url = models.URLField(max_length=100, unique=True, verbose_name='Укороченный url', null=True, db_index=True)
     slug_url = models.SlugField(unique=True, verbose_name='Человекочитаемый URL', blank=True, null=True, db_index=True, max_length=255)
+    qrcode = models.ImageField(upload_to='qrcodes/%Y/%m/%d/', verbose_name='QR код')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Обновлено')
 

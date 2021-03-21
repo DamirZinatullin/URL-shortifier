@@ -1,10 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Title</title>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
-{{ short_url }}
+
+<div class="container" align="center">
+    <h1>
+        <h2>Сервис генерирования коротких ссылок</h2>
+    </h1>
+
+
+</div>
+
+
+<div class="container col-md-8" align="center">
+    <form action="" method="GET">
+        {% csrf_token %}
+
+        {% for field in form %}
+        {% if field.value %}
+
+            <div class="form-group" align="center">
+                <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
+                <div class="form-group">
+                    {{ field }}
+                    <button class="btn btn-primary my-1" onclick="myFunction('{{ field.id_for_label }}')">Копировать
+                    </button>
+                </div>
+            </div>
+
+            <div class="invalid-feedback">{{ field.errors }}</div>
+
+        {% endif %}
+        {% endfor %}
+    </form>
+    <div class="card" style="width: 18rem;">
+        <img src="{{ short_url.qrcode.url }}" class="card-img-top">
+        <div class="card-body">
+            <p class="card-text">QR код для доступа на сайт</p>
+        </div>
+    </div>
+</div>
+
+
+<script src=" {% static 'shortifier/js/scripts.js' %}"></script>
+
 </body>
 </html>

@@ -5,24 +5,26 @@ services:
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-      - static:/static
     ports:
-       - 5432:5432
-  url_web:
-    build: .
-    env_file:
-      - .env
-#    command: python /usr/src/dev_proj/manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/usr/src/dev_proj
-    ports:
-      - 8000:8000
-    depends_on:
-      - url_db
+      - 5432:5432
+#  url_web:
+#    build: .
+#    env_file:
+#      - .env
+#    volumes:
+#      - .:/usr/src/dev_proj
+#      - static:/usr/src/dev_proj/static/
+#      - media:/usr/src/dev_proj/media/
+#    ports:
+#      - 8000:8000
+#    depends_on:
+#      - url_db
 #  nginx:
 #    build: ./nginx
 #    volumes:
-#      - static:/static
+#      - static:/usr/src/dev_proj/static/
+#      - media:/usr/src/dev_proj/media/
+#
 #    ports:
 #      - 80:80
 #    depends_on:
@@ -31,3 +33,4 @@ services:
 volumes:
   postgres_data:
   static:
+  media:

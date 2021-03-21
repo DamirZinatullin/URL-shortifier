@@ -26,3 +26,12 @@ class URLForm(forms.ModelForm):
         if URLModel.objects.filter(slug_url=slug_url).exists():
             raise ValidationError('Ссылка с таким ЧПУ уже существует, пожлуйста измените текст для ЧПУ')
         return to_slugify
+
+
+class OutputForm(forms.ModelForm):
+    class Meta:
+        model = URLModel
+        fields = ('short_url', 'slug_url')
+        widgets = {
+            'short_url': forms.URLInput(attrs={"class": 'form-control'}),
+            'slug_url': forms.TextInput(attrs={"class": 'form-control'})}
