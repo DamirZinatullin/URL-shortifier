@@ -3,6 +3,8 @@ version: '3.7'
 services:
   url_db:
     image: postgres
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     ports:
