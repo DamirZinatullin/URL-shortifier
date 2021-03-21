@@ -17,7 +17,7 @@ def create_short_url(url_id: int) -> str:
 
 
 def create_slug_url(to_slugify: str) -> str:
-    slug_url = settings.HOST_NAME + slugify(to_slugify)
+    slug_url = settings.HOST_NAME + '/' + slugify(to_slugify)
     return slug_url
 
 
