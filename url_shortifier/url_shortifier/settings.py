@@ -29,7 +29,7 @@ except:
 # # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['pretty-url.ru', 'www.pretty-url.ru', '167.99.212.180']
+ALLOWED_HOSTS = ['pretty-url.ru', 'www.pretty-url.ru', '167.99.212.180', '127.0.0.1']
 
 # Application definition
 
