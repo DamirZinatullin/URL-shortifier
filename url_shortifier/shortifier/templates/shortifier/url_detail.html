@@ -1,24 +1,6 @@
+{% extends 'shortifier/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- CSS only -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-</head>
-<body>
-
-<div class="container" align="center">
-    <h1>
-        <h2>Сервис генерирования коротких ссылок</h2>
-    </h1>
-
-
-</div>
-
-
+{% block content %}
 <div class="container col-md-8" align="center">
     <form action="" method="GET">
         {% csrf_token %}
@@ -48,8 +30,6 @@
     </div>
 </div>
 
+{% endblock  %}
 
 <script src=" {% static 'shortifier/js/scripts.js' %}"></script>
-
-</body>
-</html>

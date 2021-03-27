@@ -29,7 +29,7 @@ except:
 # # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['pretty-url.ru', 'www.pretty-url.ru', '167.99.212.180']
 
 # Application definition
 
@@ -88,7 +88,7 @@ REST_FRAMEWORK = {
 
 
 try:
-    from config.local_settings import DATABASES
+    from .local_settings import DATABASES
 except:
 
     DATABASES = {
