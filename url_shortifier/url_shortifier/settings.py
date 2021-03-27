@@ -21,7 +21,7 @@ try:
     from .local_settings import SECRET_KEY, DEBUG, HOST_NAME
 except:
     SECRET_KEY = os.getenv('SECRET_KEY')
-    DEBUG = os.getenv('DEBUG')
+    DEBUG = False
     HOST_NAME = os.getenv('HOST_NAME')
 
 # # SECURITY WARNING: keep the secret key used in production secret!
