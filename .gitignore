@@ -37,4 +37,4 @@ Makefile
 
 
 doc-dev
-/django_movie/media/
+/url_shortifier/media/

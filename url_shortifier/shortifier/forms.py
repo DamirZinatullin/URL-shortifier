@@ -33,5 +33,5 @@ class OutputForm(forms.ModelForm):
         model = URLModel
         fields = ('short_url', 'slug_url')
         widgets = {
-            'short_url': forms.URLInput(attrs={"class": 'form-control'}),
+            'short_url': forms.TextInput(attrs={"class": 'form-control'}),
             'slug_url': forms.TextInput(attrs={"class": 'form-control'})}

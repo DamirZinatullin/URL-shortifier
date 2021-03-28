@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container col-md-8" align="center">
-    <form action="" method="GET">
+    <form action="#" method="GET">
         {% csrf_token %}
 
         {% for field in form %}
@@ -12,7 +12,7 @@
                 <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
                 <div class="form-group">
                     {{ field }}
-                    <button class="btn btn-primary my-1" onclick="myFunction('{{ field.id_for_label }}')">Копировать
+                    <button class="btn btn-primary my-1" type="button" onclick="myFunction('{{ field.id_for_label }}')">Копировать
                     </button>
                 </div>
             </div>
@@ -32,4 +32,3 @@
 
 {% endblock  %}
 
-<script src=" {% static 'shortifier/js/scripts.js' %}"></script>

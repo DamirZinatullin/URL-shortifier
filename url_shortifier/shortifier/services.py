@@ -12,12 +12,12 @@ from url_shortifier.settings import MEDIA_ROOT
 
 def create_short_url(url_id: int) -> str:
     hashid = hashids.Hashids(min_length=7)
-    short_url = settings.HOST_NAME + hashid.encode(url_id)
+    short_url = os.path.join(settings.ROOT_URL, hashid.encode(url_id))
     return short_url
 
 
 def create_slug_url(to_slugify: str) -> str:
-    slug_url = settings.HOST_NAME + '/' + slugify(to_slugify)
+    slug_url = os.path.join(settings.ROOT_URL, slugify(to_slugify))
     return slug_url
 
 

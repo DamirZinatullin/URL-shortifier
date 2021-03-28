@@ -32,10 +32,10 @@ def index(request):
                 if to_slugify:
                     url_model.slug_url = create_slug_url(to_slugify)
             url_model.save()
-            path = create_path_to_file(url_model.short_url.split('/')[-1]+'.png')
+            path = create_path_to_file(url_model.short_url.split('/')[-1] + '.png')
             create_qr_code(url_model.source_url, path)
             with open(path, 'rb') as f:
-                url_model.qrcode.save((url_model.short_url.split('/')[-1]+'.png'), f)
+                url_model.qrcode.save((url_model.short_url.split('/')[-1] + '.png'), f)
             os.remove(path)
 
             return redirect(url_model)
@@ -43,6 +43,11 @@ def index(request):
         form = URLForm()
     context = {'form': form}
     return render(request, 'shortifier/index.html', context=context)
+
+
+def contact(request):
+    '''Страница обратной связи'''
+    return render(request, 'shortifier/contact.html')
 
 
 class URLDetailView(DetailView):
@@ -58,8 +63,8 @@ class URLDetailView(DetailView):
 
 
 def redirect_to_source_url(request, slug):
-    queryset = get_list_or_404(URLModel, Q(short_url=settings.HOST_NAME + slug) |
-                               Q(slug_url=settings.HOST_NAME + slug))
+    queryset = get_list_or_404(URLModel, Q(short_url=os.path.join(settings.ROOT_URL, slug)) |
+                               Q(slug_url=os.path.join(settings.ROOT_URL, slug)))
     url_model = queryset[0]
     return redirect(to=url_model.source_url)
 
