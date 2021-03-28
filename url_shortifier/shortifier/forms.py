@@ -1,3 +1,5 @@
+import os
+
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -8,7 +10,7 @@ from .services import slugify
 
 class URLForm(forms.ModelForm):
     '''Форма URL адреса'''
-    to_slugify = forms.CharField(max_length=200, label='Исходный текст для человекочитаемого URL', required=False,
+    to_slugify = forms.CharField(max_length=200, label='Исходный текст для человекочитаемого URL (ЧПУ)', required=False,
                                  widget=forms.TextInput(attrs={"class": 'form-control'}))
 
     class Meta:
@@ -22,7 +24,7 @@ class URLForm(forms.ModelForm):
 
     def clean_to_slugify(self):
         to_slugify = self.cleaned_data.get('to_slugify')
-        slug_url = settings.HOST_NAME + slugify(to_slugify)
+        slug_url = os.path.join(settings.ROOT_URL, slugify(to_slugify))
         if URLModel.objects.filter(slug_url=slug_url).exists():
             raise ValidationError('Ссылка с таким ЧПУ уже существует, пожлуйста измените текст для ЧПУ')
         return to_slugify

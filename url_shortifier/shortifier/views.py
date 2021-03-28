@@ -39,6 +39,9 @@ def index(request):
             os.remove(path)
 
             return redirect(url_model)
+        else:
+            context = {'form': form}
+            return render(request, 'shortifier/index.html', context=context)
     else:
         form = URLForm()
     context = {'form': form}
