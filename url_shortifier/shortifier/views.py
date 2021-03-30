@@ -65,6 +65,21 @@ class URLDetailView(DetailView):
         return context
 
 
+class SearchSource(DetailView):
+    '''Поиск исходного URL'''
+    template_name = 'shortifier/url_detail.html'
+    context_object_name = 'short_url'
+
+    def get_object(self, queryset=None):
+        return URLModel.objects.get(short_url=self.request.GET.get('q'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = OutputForm(instance=self.object)
+        context['form'] = form
+        return context
+
+
 def redirect_to_source_url(request, slug):
     queryset = get_list_or_404(URLModel, Q(short_url=os.path.join(settings.ROOT_URL, slug)) |
                                Q(slug_url=os.path.join(settings.ROOT_URL, slug)))
@@ -75,7 +90,7 @@ def redirect_to_source_url(request, slug):
 class URLAPIView(APIView):
     '''Вывод URL адреса'''
 
-    # permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, pk):
         url_model = URLModel.objects.get(id=pk)
