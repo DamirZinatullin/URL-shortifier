@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 from shortifier.services import *
 from url_shortifier.settings import MEDIA_ROOT
-from .forms import URLForm, OutputForm
+from .forms import URLForm, OutputForm, SourceUrlForm
 # Create your views here.
 from .models import URLModel
 from .serializers import URLSerializer
@@ -77,14 +77,14 @@ class SearchSource(DetailView):
 
     def get_object(self, queryset=None):
         try:
-            model = URLModel.objects.get(short_url=self.request.GET.get('q'))
+            model = URLModel.objects.get(Q(short_url=self.request.GET.get('q')) | Q(slug_url=self.request.GET.get('q')))
         except URLModel.DoesNotExist:
             raise Http404('Такого URL не существует')
         return model
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        form = OutputForm(instance=self.object)
+        form = SourceUrlForm(instance=self.object)
         context['form'] = form
         return context
 

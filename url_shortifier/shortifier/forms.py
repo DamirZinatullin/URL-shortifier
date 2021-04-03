@@ -15,11 +15,11 @@ class URLForm(forms.ModelForm):
 
     class Meta:
         model = URLModel
-        fields = ('source_url', 'to_slugify', 'slug_url')
+        fields = ('source_url', 'to_slugify')
         widgets = {
             'source_url': forms.URLInput(attrs={"class": 'form-control'}),
             'to_slugify': forms.TextInput(attrs={"class": 'form-control'}),
-            'slug_url': forms.URLInput(attrs={"class": 'form-control', 'disabled': True}),
+            # 'slug_url': forms.URLInput(attrs={"class": 'form-control', 'disabled': True}),
         }
 
     def clean_to_slugify(self):
@@ -33,7 +33,15 @@ class URLForm(forms.ModelForm):
 class OutputForm(forms.ModelForm):
     class Meta:
         model = URLModel
-        fields = ('source_url',)
+        fields = ('short_url', 'slug_url')
         widgets = {
             'short_url': forms.TextInput(attrs={"class": 'form-control'}),
             'slug_url': forms.TextInput(attrs={"class": 'form-control'})}
+
+
+class SourceUrlForm(forms.ModelForm):
+    class Meta:
+        model = URLModel
+        fields = ('source_url',)
+        widgets = {
+            'source_url': forms.TextInput(attrs={"class": 'form-control'})}
