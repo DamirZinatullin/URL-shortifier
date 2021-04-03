@@ -33,7 +33,7 @@ class URLForm(forms.ModelForm):
 class OutputForm(forms.ModelForm):
     class Meta:
         model = URLModel
-        fields = ('short_url', 'slug_url')
+        fields = ('source_url',)
         widgets = {
             'short_url': forms.TextInput(attrs={"class": 'form-control'}),
             'slug_url': forms.TextInput(attrs={"class": 'form-control'})}
