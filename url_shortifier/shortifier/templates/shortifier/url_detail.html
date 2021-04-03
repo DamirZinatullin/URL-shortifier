@@ -1,7 +1,10 @@
 {% extends 'shortifier/base.html' %}
 {% load static %}
+{% block h2 %}
+URLы для запрашиваевого ресурса
+{% endblock h2 %}
+
 {% block content %}
-<div class="container col-md-8" align="center">
     <form action="#" method="GET">
         {% csrf_token %}
 
@@ -28,7 +31,5 @@
             <p class="card-text">QR код для доступа на сайт</p>
         </div>
     </div>
-</div>
-
 {% endblock  %}
 

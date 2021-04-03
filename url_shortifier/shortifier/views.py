@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render, redirect, get_list_or_404
 from django.views.generic import DetailView
 from rest_framework import permissions
@@ -14,6 +15,10 @@ from .forms import URLForm, OutputForm
 # Create your views here.
 from .models import URLModel
 from .serializers import URLSerializer
+
+
+def error_404_view(request, exception):
+    return render(request, 'shortifier/404.html')
 
 
 def index(request):
@@ -71,7 +76,11 @@ class SearchSource(DetailView):
     context_object_name = 'short_url'
 
     def get_object(self, queryset=None):
-        return URLModel.objects.get(short_url=self.request.GET.get('q'))
+        try:
+            model = URLModel.objects.get(short_url=self.request.GET.get('q'))
+        except URLModel.DoesNotExist:
+            raise Http404('Такого URL не существует')
+        return model
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

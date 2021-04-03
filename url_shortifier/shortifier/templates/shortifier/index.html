@@ -3,9 +3,9 @@
 
 {% block title %} Сервис генерирования коротких ссылок {% endblock %}
 {% block content %}
-<div class="container col-md-5" align="center">
+
     {% for error in form.non_field_errors %}
-        <span class="error-message">{{ error }}</span>
+    <span class="error-message">{{ error }}</span>
     {% endfor %}
 
     <form action="{% url 'index' %}" method="POST">
@@ -15,5 +15,5 @@
         </div>
         <button type="submit" class="btn btn-primary">Получить короткую ссылку</button>
     </form>
-</div>
+
 {% endblock content %}

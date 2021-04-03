@@ -23,3 +23,5 @@ urlpatterns = [
     path('', include('shortifier.urls')),
 ]
 urlpatterns += doc_urls
+
+handler404 = 'shortifier.views.error_404_view'
