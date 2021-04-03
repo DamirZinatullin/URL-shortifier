@@ -25,7 +25,7 @@ class URLForm(forms.ModelForm):
     def clean_to_slugify(self):
         to_slugify = self.cleaned_data.get('to_slugify')
         slug_url = os.path.join(settings.ROOT_URL, slugify(to_slugify))
-        if URLModel.objects.filter(slug_url=slug_url).exists():
+        if SlugURLModel.objects.filter(slug_url=slug_url).exists():
             raise ValidationError('Ссылка с таким ЧПУ уже существует, пожлуйста измените текст для ЧПУ')
         return to_slugify
 
@@ -33,10 +33,9 @@ class URLForm(forms.ModelForm):
 class OutputForm(forms.ModelForm):
     class Meta:
         model = URLModel
-        fields = ('short_url', 'slug_url')
+        fields = ('short_url',)
         widgets = {
-            'short_url': forms.TextInput(attrs={"class": 'form-control'}),
-            'slug_url': forms.TextInput(attrs={"class": 'form-control'})}
+            'short_url': forms.TextInput(attrs={"class": 'form-control'})}
 
 
 class SourceUrlForm(forms.ModelForm):
@@ -45,3 +44,11 @@ class SourceUrlForm(forms.ModelForm):
         fields = ('source_url',)
         widgets = {
             'source_url': forms.TextInput(attrs={"class": 'form-control'})}
+
+
+class SlugURLForm(forms.ModelForm):
+    class Meta:
+        model = SlugURLModel
+        fields = ('slug_url',)
+        widgets = {
+            'slug_url': forms.TextInput(attrs={"class": 'form-control'})}
