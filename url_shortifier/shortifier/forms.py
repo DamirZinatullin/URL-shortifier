@@ -38,17 +38,17 @@ class OutputForm(forms.ModelForm):
             'short_url': forms.TextInput(attrs={"class": 'form-control'})}
 
 
-class SourceUrlForm(forms.ModelForm):
-    class Meta:
-        model = URLModel
-        fields = ('source_url',)
-        widgets = {
-            'source_url': forms.TextInput(attrs={"class": 'form-control'})}
-
-
 class SlugURLForm(forms.ModelForm):
     class Meta:
         model = SlugURLModel
         fields = ('slug_url',)
         widgets = {
             'slug_url': forms.TextInput(attrs={"class": 'form-control'})}
+
+
+class SourceUrlForm(forms.ModelForm):
+    class Meta:
+        model = URLModel
+        fields = ('source_url',)
+        widgets = {
+            'source_url': forms.TextInput(attrs={"class": 'form-control'})}

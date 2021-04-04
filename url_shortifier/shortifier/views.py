@@ -3,6 +3,8 @@ from datetime import datetime
 
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import formset_factory, modelformset_factory
+
 from django.http import Http404
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
 from django.views.generic import DetailView
@@ -69,9 +71,10 @@ class URLDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         source_url_form = OutputForm(instance=self.object)
-        for slug_url in SlugURLModel.objects.filter(source_url=self.object.id):
-            print(slug_url)
+        SlugUrlFormset = modelformset_factory(SlugURLModel, form=SlugURLForm, extra=0)
+        formset = SlugUrlFormset(queryset=SlugURLModel.objects.filter(source_url=self.object.id))
         context['form'] = source_url_form
+        context['formset'] = formset
 
         return context
 
@@ -82,10 +85,9 @@ class SearchSource(DetailView):
     context_object_name = 'short_url'
 
     def get_object(self, queryset=None):
-        try:
-            model = URLModel.objects.get(
-                Q(short_url=self.request.GET.get('q')) | Q(slug_url__slug_url=self.request.GET.get('q')))
-        except URLModel.DoesNotExist:
+        model = URLModel.objects.filter(
+            Q(short_url=self.request.GET.get('q')) | Q(slug_url__slug_url=self.request.GET.get('q'))).first()
+        if not model:
             raise Http404('Такого URL не существует')
         return model
 
@@ -97,9 +99,16 @@ class SearchSource(DetailView):
 
 
 def redirect_to_source_url(request, slug):
-    url_model = get_object_or_404(SlugURLModel, (Q(slug_url=os.path.join(settings.ROOT_URL, slug)) | Q(
-        source_url__short_url=os.path.join(settings.ROOT_URL, slug))))
-    return redirect(to=url_model.source_url.source_url)
+    # url_model = get_list_or_404(SlugURLModel, (Q(slug_url=os.path.join(settings.ROOT_URL, slug)) | Q(
+    #     source_url__short_url=os.path.join(settings.ROOT_URL, slug))))
+    url_model = URLModel.objects.filter(short_url=os.path.join(settings.ROOT_URL, slug)).first()
+    if url_model:
+        return redirect(to=url_model.source_url)
+    url_model_set = SlugURLModel.objects.filter(slug_url=os.path.join(settings.ROOT_URL, slug)).first()
+    if url_model:
+        return redirect(to=url_model_set.source_url.source_url)
+    else:
+        raise Http404('Такого URL не существует')
 
 
 class URLAPIView(APIView):

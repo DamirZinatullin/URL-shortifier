@@ -5,31 +5,55 @@ URLы для запрашиваевого ресурса
 {% endblock h2 %}
 
 {% block content %}
-    <form action="#" method="GET">
-        {% csrf_token %}
+<form action="#" method="GET">
+    {% csrf_token %}
 
-        {% for field in form %}
-        {% if field.value %}
+    {% for field in form %}
+    {% if field.value %}
 
-            <div class="form-group col-md-8" align="center">
-                <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
-                <div class="form-group">
-                    {{ field }}
-                    <button class="btn btn-primary my-1" type="button" onclick="myFunction('{{ field.id_for_label }}')">Копировать
-                    </button>
-                </div>
-            </div>
-
-            <div class="invalid-feedback">{{ field.errors }}</div>
-
-        {% endif %}
-        {% endfor %}
-    </form>
-    <div class="card" style="width: 18rem;">
-        <img src="{{ short_url.qrcode.url }}" class="card-img-top">
-        <div class="card-body">
-            <p class="card-text">QR код для доступа на сайт</p>
+    <div class="form-group col-md-8" align="center">
+        <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
+        <div class="form-group">
+            {{ field }}
+            <button class="btn btn-primary my-1" type="button" onclick="myFunction('{{ field.id_for_label }}')">
+                Копировать
+            </button>
         </div>
     </div>
+
+    <div class="invalid-feedback">{{ field.errors }}</div>
+
+    {% endif %}
+    {% endfor %}
+
+
+    {{ formset.management_form }}
+    {% for form in formset %}
+
+    {% for field in form %}
+    {% if field.label != 'Id' %}
+
+    <div class="form-group col-md-8" align="center">
+        <label for="{{ field.id_for_label }}"> {{ field.label }}</label>
+        <div class="form-group">
+            {{ field }}
+            <button class="btn btn-primary my-1" type="button" onclick="myFunction('{{ field.id_for_label }}')">
+                Копировать
+            </button>
+        </div>
+    </div>
+
+    <div class="invalid-feedback">{{ field.errors }}</div>
+
+    {% endif %}
+    {% endfor %}
+    {% endfor fromset%}
+</form>
+<div class="card" style="width: 18rem;">
+    <img src="{{ short_url.qrcode.url }}" class="card-img-top">
+    <div class="card-body">
+        <p class="card-text">QR код для доступа на сайт</p>
+    </div>
+</div>
 {% endblock  %}
 
