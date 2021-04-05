@@ -25,6 +25,8 @@ def error_404_view(request, exception):
 
 
 def index(request):
+    '''Начальная страница'''
+
     if request.method == 'POST':
         form = URLForm(request.POST)
         if form.is_valid():
@@ -60,10 +62,13 @@ def index(request):
 
 def contact(request):
     '''Страница обратной связи'''
+
     return render(request, 'shortifier/contact.html')
 
 
 class URLDetailView(DetailView):
+    '''Вывод сгенерированных коротких URL'''
+
     model = URLModel
     context_object_name = 'short_url'
     template_name = 'shortifier/url_detail.html'
@@ -81,6 +86,7 @@ class URLDetailView(DetailView):
 
 class SearchSource(DetailView):
     '''Поиск исходного URL'''
+
     template_name = 'shortifier/url_detail.html'
     context_object_name = 'short_url'
 
@@ -99,14 +105,14 @@ class SearchSource(DetailView):
 
 
 def redirect_to_source_url(request, slug):
-    # url_model = get_list_or_404(SlugURLModel, (Q(slug_url=os.path.join(settings.ROOT_URL, slug)) | Q(
-    #     source_url__short_url=os.path.join(settings.ROOT_URL, slug))))
+    '''Перенаправление на URL исходного сайта'''
+
     url_model = URLModel.objects.filter(short_url=os.path.join(settings.ROOT_URL, slug)).first()
     if url_model:
         return redirect(to=url_model.source_url)
-    url_model_set = SlugURLModel.objects.filter(slug_url=os.path.join(settings.ROOT_URL, slug)).first()
+    url_model = SlugURLModel.objects.filter(slug_url=os.path.join(settings.ROOT_URL, slug)).first()
     if url_model:
-        return redirect(to=url_model_set.source_url.source_url)
+        return redirect(to=url_model.source_url.source_url)
     else:
         raise Http404('Такого URL не существует')
 
