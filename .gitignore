@@ -34,7 +34,8 @@ doc
 home.rst
 make.bat
 Makefile
-
+/url_shortifier/nginx/pretty-url.crt
+/url_shortifier/nginx/pretty-url.key
 
 doc-dev
 /url_shortifier/media/
