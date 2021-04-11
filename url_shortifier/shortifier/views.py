@@ -17,7 +17,7 @@ from url_shortifier.settings import MEDIA_ROOT
 from .forms import *
 # Create your views here.
 from .models import *
-from .serializers import URLSerializer
+from .serializers import *
 
 
 def error_404_view(request, exception):
@@ -126,3 +126,21 @@ class URLAPIView(APIView):
         url_model = URLModel.objects.get(id=pk)
         serializer = URLSerializer(url_model)
         return Response(serializer.data)
+
+
+class CreateShortURLAPI(APIView):
+    '''
+    Создание короткого URL. Запрос следует отправлять вида: {source_url: URL для сокращения}. Если хотите получить
+    человекочитаемый URL (ЧПУ), необходимо отправить запрос вида: {source_url: URL для сокращения, to_slugify: Текст,
+    который хотите использовать для ЧПУ}
+    '''
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = CreateShortURLSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200, data=serializer.data)
+        else:
+            print(serializer.errors)
+            return Response(status=400, data=serializer.errors)
