@@ -1,10 +1,12 @@
 import os
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer
 
 from shortifier.models import *
-from shortifier.services import create_slug_url, create_short_url, create_path_to_file, create_qr_code
+from shortifier.services import create_slug_url, create_short_url, create_path_to_file, create_qr_code, slugify
+from url_shortifier import settings
 
 
 class SlugURLSerializer(ModelSerializer):
@@ -25,6 +27,7 @@ class URLSerializer(ModelSerializer):
 
 class CreateShortURLSerializer(ModelSerializer):
     to_slugify = serializers.CharField(max_length=200, required=False)
+    slug_url = SlugURLSerializer(read_only=True, many=True)
 
     def create(self, validated_data):
         try:
@@ -51,6 +54,12 @@ class CreateShortURLSerializer(ModelSerializer):
         os.remove(path)
         return url_model
 
+    def validate_to_slugify(self, value):
+        slug_url = os.path.join(settings.ROOT_URL, slugify(value))
+        if SlugURLModel.objects.filter(slug_url=slug_url).exists():
+            raise ValidationError('Ссылка с таким ЧПУ уже существует, пожлуйста измените текст для ЧПУ')
+        return value
+
     class Meta:
         model = URLModel
-        fields = ('source_url', 'to_slugify')
+        fields = ('source_url', 'to_slugify', 'slug_url')
